@@ -1,0 +1,120 @@
+#fiche-monster {
+  max-width : 1040px;
+  margin : 0 auto;
+
+  h2 {
+    span {
+      font-size : 1.2rem;
+      color : rgba(black, .6);
+    }
+  }
+
+  .infos {
+    display : flex;
+    background : $col2;
+
+    div {
+      flex : 1;
+      border-right : 2px solid $white;
+
+      &:last-child {
+        border : none;
+      }
+    }
+
+    dt {
+      color : $white;
+      background : $col3;
+    }
+  }
+
+  dl {
+    text-align : center;
+  }
+
+  .special_abilities,.actions {
+    text-align : left;
+  }
+
+  dt,dd {
+    padding : 10px;
+  }
+
+  dd {
+    margin : 0;
+  }
+}
+
+$radius : 8px;
+
+.wrap {
+  display : flex;
+}
+
+.caracs {
+  padding : 0 10px;
+  background : $col2;
+  font-size : 14px;
+
+  h3 {
+    text-align : center;
+  }
+
+  div {
+    margin-bottom : 10px;
+    background : $white;
+    border-radius : $radius;
+  }
+
+  dt {
+    color : $white;
+    background : $col3;
+    border-radius : $radius $radius 0 0;
+  }
+
+  dd {
+    font-weight : bold;
+  }
+}
+
+.saves {
+  margin-right : 10px;
+}
+
+.wrap-infos {
+  flex : 2;
+
+  dl:first-child {
+    margin-top : 0; 
+  }
+}
+
+/* ACTIONS */
+
+.actions {
+  position : relative;
+
+  ul {
+    display : flex;
+    justify-content : space-around;
+    list-style : none;
+    margin : 0; padding : 0;
+
+    li {
+      background : $white;
+      padding : 10px;
+      border-radius : 8px;
+
+      span {
+        font-weight : bold;
+      }
+    }
+  }
+
+  .dice_roll {
+    position : absolute;
+    top : 10px; right : 10px;
+  }
+}
+
+

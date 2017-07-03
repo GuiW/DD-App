@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>D&D monsters</title>
+
+  <link rel="stylesheet" href="style/css/style.css">
+
+   <script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+  <script src="node_modules/vue/dist/vue.js"></script>
+
+</head>
+<body>
+  <main id="app">
+    <header>
+      <h1>D&d monsters</h1>
+      <form action="">
+        <label for="monsters"></label>
+        <select v-model="monsterURL" name="monsters" id="monsters" @change="getAjaxRequest">
+          <option value="" disabled selected>Choisissez un monstre</option>
+          <option v-for="monster in monsters" v-bind:value="monster.url">{{ monster.name }}</option>
+        </select>      
+      </form>
+    </header>
+    
+  <!-- Fiche de monstre -->
+    <section v-show="loading" id="fiche-monster">
+    <!-- Nom du monstre -->
+      <h2>{{ the_monster.name }} <span>- CR : {{ the_monster.challenge_rating }}</span></h2>
+
+    <!-- Type, size and alignment  -->
+      <dl class="infos">
+        <div>
+          <dt>Type</dt>
+          <dd>{{ the_monster.type }}</dd>
+        </div>
+        <div>
+          <dt>Size</dt>
+          <dd>{{ the_monster.size }}</dd>
+        </div>
+        <div>
+          <dt>Alignment</dt>
+          <dd>{{ the_monster.alignment }}</dd>
+        </div>
+      </dl>
+
+    <!-- Speed, AC and HP  -->
+      <dl class="infos">
+        <div>
+          <dt>Speed</dt>
+          <dd>{{ the_monster.speed }}</dd>
+        </div>
+
+        <div>
+          <dt><abbr title="Armor Class" class="icon-shield"></abbr></dt>
+          <dd>{{ the_monster.armor_class }}</dd>
+        </div>
+
+        <div>
+          <dt><abbr title="Hit Points" class="icon-heart"></abbr></dt>
+          <dd>{{ the_monster.hit_points }} ({{ the_monster.hit_dice }})</dd>
+        </div>
+      </dl>
+    
+    
+    <div class="wrap wrap-caracs">
+    <!-- Abilities -->
+      <div class="caracs abilities">
+        <h3>Abilities</h3>
+        <dl>
+          <div>
+            <dt>Strength</dt>
+            <dd>{{ the_monster.strength }}</dd>
+          </div>
+
+          <div>
+            <dt>Dexterity</dt>
+            <dd>{{ the_monster.dexterity }}</dd>
+          </div>
+
+          <div>
+            <dt>Constitution</dt>
+            <dd>{{ the_monster.constitution }}</dd>
+          </div>
+
+          <div>
+            <dt>Intelligence</dt>
+            <dd>{{ the_monster.intelligence }}</dd>
+          </div>
+
+          <div>
+            <dt>Wisdom</dt>
+            <dd>{{ the_monster.wisdom }}</dd>
+          </div>
+
+          <div>
+            <dt>Charisma</dt>
+            <dd>{{ the_monster.charisma }}</dd>
+          </div>
+        </dl>
+      </div>
+      
+    <!-- Saving throw -->
+      <div class="caracs saves">
+
+        <h3>Saving Throws</h3>
+        <dl>
+          <div v-if="the_monster.strength_save">
+            <dt>Strength</dt>
+            <dd>+{{ the_monster.strength_save }}</dd>
+          </div>
+
+          <div v-if="the_monster.dexterity_save">
+            <dt>Dexterity</dt>
+            <dd>+{{ the_monster.dexterity_save }}</dd>
+          </div>
+
+          <div v-if="the_monster.constitution_save">
+            <dt>Constitution</dt>
+            <dd>+{{ the_monster.constitution_save }}</dd>
+          </div>
+
+          <div v-if="the_monster.intelligence_save">
+            <dt>Intelligence</dt>
+            <dd>+{{ the_monster.intelligence_save }}</dd>
+          </div>
+
+          <div v-if="the_monster.wisdom_save">
+            <dt>Wisdom</dt>
+            <dd>+{{ the_monster.wisdom_save }}</dd>
+          </div>
+
+          <div v-if="the_monster.charisma_save">
+            <dt>Charisma</dt>
+            <dd>+{{ the_monster.charisma_save }}</dd>
+          </div>
+        </dl>
+      </div>
+
+    <!-- miscellaneous infos -->
+      <div class="wrap-infos">
+      <!-- Damage resistances and vulnerabilities -->
+        <dl class="infos">
+          <div>
+            <dt><abbr title="Damage vulnerabilities">Dmg. Vul.</abbr></dt>
+            <dd>{{ the_monster.damage_vulnerabilities }}</dd>
+          </div>
+
+          <div>
+            <dt><abbr title="Damage resistances">Dmg. Res.</dt>
+            <dd>{{ the_monster.damage_resistances }}</dd>
+          </div>
+
+          <div>
+            <dt><abbr title="Damage imminities">Dmg. Imm.</dt>
+            <dd>{{ the_monster.damage_immunities }}</dd>
+          </div> 
+        </dl>
+      
+      <!-- Senses and languages -->
+        <dl class="infos">
+          <div>
+            <dt>Senses</dt>
+            <dd>{{ the_monster.senses }}</dd>
+          </div>
+
+          <div>
+            <dt>Languages</dt>
+            <dd>{{ the_monster.languages }}</dd>
+          </div>
+        </dl>
+
+      <!-- Traits -->
+        <h3>Special abilities :</h3>
+        <dl class="infos special_abilities" v-for="trait in the_monster.special_abilities">
+          <div>
+            <dt>{{ trait.name }}</dt>
+            <dd>{{ trait.desc }}</dd>
+          </div>
+        </dl>
+      </div>
+    </div><!-- wrap -->
+
+    <dl class="infos actions" v-for="action in the_monster.actions">
+      <div>
+        <dt>{{ action.name }}</dt>
+        <dd>
+          <ul>
+            <li>Attack bonus : <span>+{{ action.attack_bonus }}</span></li>
+            <li v-if="action.damage_bonus">Dmg bonus : <span>+{{ action.damage_bonus }}</span></li>
+            <li v-if="action.damage_dice">Dmg dice : <span>{{ action.damage_dice }}</span></li>
+          </ul>
+          <p>{{ action.desc }}</p>
+        </dd>
+        <button @click="RollTheDice(action.attack_bonus, action.damage_dice, action.damage_bonus)" v-if="action.damage_dice" class="dice_roll"><span class="icon-dice" title="Roll the dice!"></span></button>
+      </div>
+    </dl>
+
+    </section>
+    
+  </main>
+
+  <script src="ajax.js"></script>
+</body>
+</html>
