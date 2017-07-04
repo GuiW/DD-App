@@ -1,0 +1,16 @@
+<dl class="infos actions" v-for="action in the_monster.actions">
+  <div>
+    <dt>{{ action.name }}</dt>
+    <dd>
+      <ul>
+        <li>Attack bonus : <span>+{{ action.attack_bonus }}</span></li>
+        <li v-if="action.damage_bonus">Dmg bonus : <span>+{{ action.damage_bonus }}</span></li>
+        <li v-if="action.damage_dice">Dmg dice : <span>{{ action.damage_dice }}</span></li>
+      </ul>
+      <p>{{ action.desc }}</p>
+    </dd>
+    <button @click="RollTheDice(action.attack_bonus, action.damage_dice, action.damage_bonus)" v-if="action.damage_dice" class="dice_roll"><span class="icon-dice" title="Roll the dice!"></span></button>
+
+    <div v-html="rollResult"></div>
+  </div>
+</dl>

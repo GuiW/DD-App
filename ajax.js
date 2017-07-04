@@ -1,10 +1,29 @@
+var actionComp = Vue.extend({
+  template: '#action-template',
+  props:['actions'],
+  data: function() {
+    return {
+      counter: 0
+    }
+  },
+  methods : {
+    RollTheDice(){
+      this.rollResult += 1;
+    }
+  }
+})
+
 var app = new Vue({
   el: "#app",
   data: {
     monsters: "",
     monsterURL: "",
     the_monster:{},
-    loading: false
+    loading: false,
+  },
+
+  components: {
+      'action': actionComp
   },
 
   mounted(){
@@ -22,32 +41,6 @@ var app = new Vue({
         self.the_monster = data;
         self.loading = true;
       })
-    },
-
-    RollTheDice(atck_bonus, dmg_dice, dmg_bonus){
-
-      var Rolling = function(multiplier,dice) {
-        return multiplier * Math.floor((Math.random() * dice) + 1);
-      }
-
-      var nbrs = dmg_dice.match(/\d+/g);
-      console.log(nbrs);
-
-      var nbDices01 = nbrs[0];
-      var dice01 = nbrs[1];
-      var nbDices02 = nbrs[2];
-      var dice02 = nbrs[3];
-
-      if (nbDices02) {
-        var res = Rolling(nbDices01, dice01) + " + " + Rolling(nbDices02, dice02);
-
-        console.log(dmg_dice + " = " + res)
-      }
-
-      else {
-        var res = Rolling(nbDices01, dice01);
-        console.log(dmg_dice + " = " + res)
-      }
     }
   }
 })

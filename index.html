@@ -152,12 +152,12 @@
           </div>
 
           <div>
-            <dt><abbr title="Damage resistances">Dmg. Res.</dt>
+            <dt><abbr title="Damage resistances">Dmg. Res.</abbr></dt>
             <dd>{{ the_monster.damage_resistances }}</dd>
           </div>
 
           <div>
-            <dt><abbr title="Damage imminities">Dmg. Imm.</dt>
+            <dt><abbr title="Damage imminities">Dmg. Imm.</abbr></dt>
             <dd>{{ the_monster.damage_immunities }}</dd>
           </div> 
         </dl>
@@ -186,24 +186,30 @@
       </div>
     </div><!-- wrap -->
 
-    <dl class="infos actions" v-for="action in the_monster.actions">
-      <div>
-        <dt>{{ action.name }}</dt>
-        <dd>
-          <ul>
-            <li>Attack bonus : <span>+{{ action.attack_bonus }}</span></li>
-            <li v-if="action.damage_bonus">Dmg bonus : <span>+{{ action.damage_bonus }}</span></li>
-            <li v-if="action.damage_dice">Dmg dice : <span>{{ action.damage_dice }}</span></li>
-          </ul>
-          <p>{{ action.desc }}</p>
-        </dd>
-        <button @click="RollTheDice(action.attack_bonus, action.damage_dice, action.damage_bonus)" v-if="action.damage_dice" class="dice_roll"><span class="icon-dice" title="Roll the dice!"></span></button>
-      </div>
-    </dl>
+    <action :actions="the_monster.actions" ></action>
 
     </section>
     
   </main>
+
+  <template id="action-template">
+    <div>
+      <dl class="infos actions" v-for="action in actions">
+        <div>
+          <dt>{{ action.name }}</dt>
+          <dd>
+            <ul>
+              <li>Attack bonus : <span>+{{ action.attack_bonus }}</span></li>
+              <li v-if="action.damage_bonus">Dmg bonus : <span>+{{ action.damage_bonus }}</span></li>
+              <li v-if="action.damage_dice">Dmg dice : <span>{{ action.damage_dice }}</span></li>
+            </ul>
+            <p>{{ action.desc }}</p>
+          </dd>
+          <button @click="RollTheDice(action.attack_bonus, action.damage_dice, action.damage_bonus)" v-if="action.damage_dice" class="dice_roll"><span class="icon-dice" title="Roll the dice!"></span></button>
+        </div>
+      </dl>
+    </div>
+  </template>
 
   <script src="ajax.js"></script>
 </body>
