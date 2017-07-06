@@ -186,29 +186,26 @@
       </div>
     </div><!-- wrap -->
 
-    <action :actions="the_monster.actions" ></action>
+    <!-- Component action-list -->
+    <action-list :actions="the_monster.actions" ></action-list>
 
     </section>
     
   </main>
 
-  <template id="action-template">
-    <div>
-      <dl class="infos actions" v-for="action in actions">
-        <div>
-          <dt>{{ action.name }}</dt>
-          <dd>
-            <ul>
-              <li>Attack bonus : <span>+{{ action.attack_bonus }}</span></li>
-              <li v-if="action.damage_bonus">Dmg bonus : <span>+{{ action.damage_bonus }}</span></li>
-              <li v-if="action.damage_dice">Dmg dice : <span>{{ action.damage_dice }}</span></li>
-            </ul>
-            <p>{{ action.desc }}</p>
-          </dd>
-          <button @click="RollTheDice(action.attack_bonus, action.damage_dice, action.damage_bonus)" v-if="action.damage_dice" class="dice_roll"><span class="icon-dice" title="Roll the dice!"></span></button>
-        </div>
-      </dl>
-    </div>
+  <!-- Template de la liste d'actions' -->
+  <template id="action-list">
+    <ul>
+      <action-item v-for="action in actions" :action="action"></action-item>
+    </ul>
+  </template>
+
+  <!-- Template d'une action -->
+  <template id="action-item">
+    <li v-if="action.damage_dice">
+      <button @click="RollTheDice(action.attack_bonus, action.damage_dice, action.damage_bonus)">{{action.damage_dice}}</button>
+      <output>{{ rollResult }}</output>
+    </li>
   </template>
 
   <script src="ajax.js"></script>
